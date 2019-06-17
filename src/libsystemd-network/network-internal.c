@@ -24,7 +24,7 @@
 #include "utf8.h"
 #include "util.h"
 
-const char *net_get_name(sd_device *device) {
+const char *net_get_name_persistent(sd_device *device) {
         const char *name, *field;
 
         assert(device);
@@ -50,7 +50,7 @@ int net_get_unique_predictable_data(sd_device *device, bool use_sysname, uint64_
         /* net_get_name_persistent() will return one of the device names based on stable information about
          * the device. If this is not available, we fall back to using the actual device name. */
         name = net_get_name_persistent(device);
-        if (!name && use_sysname)
+        if (!name)
                 (void) sd_device_get_sysname(device, &name);
         if (!name)
                 return log_device_debug_errno(device, SYNTHETIC_ERRNO(ENODATA),
